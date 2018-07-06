@@ -16,7 +16,7 @@ import './shaders/VerticalTiltShiftShader';
 import './shaders/ScreenShader';
 
 import './MarchingCubes';
-import './ShaderToon';
+// import './ShaderToon';
 
 const glslify = require('glslify');
 const OrbitControls = OrbitContructor(THREE);
@@ -80,8 +80,8 @@ class Scene {
 	initCubes()
 	{
 		// MARCHING CUBES
-		let path = "assets/SwedishRoyalCastle/";
-		let format = '.jpg';
+		let path = "assets/pisa/";
+		let format = '.png';
 		let urls = [
 			path + 'px' + format, path + 'nx' + format,
 			path + 'py' + format, path + 'ny' + format,
@@ -95,7 +95,11 @@ class Scene {
 			color: 0xffffff,
 			envMap: reflectionCube,
 			roughness: 0.1,
-			metalness: 1.0
+			metalness: 1.0,
+			side:THREE.FrontSide
+			// side:THREE.DoubleSide
+			// side:THREE.BackSide
+
 		})
 
 		this.effect = new THREE.MarchingCubes(28, material, true, true);
@@ -107,8 +111,11 @@ class Scene {
 		this.scene.add(this.effect);
 	}
 
-	updateCubes(object, time, numblobs) {
+	updateCubes(object, time) {
 		object.reset();
+
+
+		var numblobs = 10;
 
 		// fill the field with some metaballs
 		var i, ballx, bally, ballz, subtract, strength;
@@ -126,7 +133,8 @@ class Scene {
 
 		}
 
-		object.addPlaneY(2, 12);
+		// object.addPlaneY(2, 12);
+		// object.addPlaneX(2, 12);
 	}
 
 
@@ -165,7 +173,7 @@ class Scene {
 		var delta = clock.getDelta();
 		time += delta;
 
-		if(this.effect)this.updateCubes(this.effect, time, 10000);
+		if(this.effect)this.updateCubes(this.effect, time);
 
 		if (this.stats) this.stats.update();
 		this.renderer.render(this.scene, this.camera);
